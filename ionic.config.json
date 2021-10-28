@@ -1,0 +1,7 @@
+{
+  "name": "vfc-web",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}

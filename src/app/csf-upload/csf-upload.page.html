@@ -1,0 +1,9 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>csf-upload</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+<input [(ngModel)]="filePath" accept=".csv" (change)="getFilePath($event)" type="file">
+</ion-content>

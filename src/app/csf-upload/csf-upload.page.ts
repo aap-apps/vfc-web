@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from '../services/api/api.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ApiService } from '../common-services/api/api.service';
+import { ConvertCsvService } from '../services/convert-csv/convert-csv.service';
+import { UploadCsvService } from '../services/upload-csv/upload-csv.service';
 
 @Component({
   selector: 'app-csf-upload',
@@ -8,14 +11,27 @@ import { ApiService } from '../services/api/api.service';
 })
 export class CsfUploadPage implements OnInit {
   filePath = '';
-  constructor(private apiService: ApiService) {}
-  getFilePath(value) {
-    debugger;
+  convertorForm = new FormGroup({
+    apiFileName: new FormControl('', Validators.required),
+    key: new FormControl('', Validators.required),
+  });
+  constructor(
+    private uploadCsvService: UploadCsvService,
+    private convertCsvService: ConvertCsvService
+  ) {}
+  async getFilePath(value) {
     console.log(value.target.files[0]);
-    this.apiService.postFile(
-      'https://fournotone.com/csvtovcf/uploadCsv',
-      value.target.files[0]
-    );
+    let file = await this.uploadCsvService.uploadCsv(value.target.files[0]);
+    console.log(file);
+    this.convertorForm.patchValue({ apiFileName: file.fileName });
   }
   ngOnInit() {}
+
+  async sumbit(form: FormGroup) {
+    this.convertCsvService.convertTheCsvToVcard(
+      form.value.apiFileName,
+      form.value.key
+    );
+    this.convertorForm.reset();
+  }
 }

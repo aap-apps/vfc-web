@@ -5,5 +5,43 @@
 </ion-header>
 
 <ion-content>
-<input [(ngModel)]="filePath" accept=".csv" (change)="getFilePath($event)" type="file">
+<!-- <input [(ngModel)]="filePath" accept=".csv" (change)="getFilePath($event)" type="file"> -->
+
+
+<ion-card >
+
+  <ion-button expand="full">
+    <ion-icon lazy="true" slot="start" name="image"></ion-icon>
+    <!-- <ion-label slot="end">Upload Image</ion-label> -->
+    <input [(ngModel)]="filePath" accept=".csv" type="file" (change)="getFilePath($event)" id="file-input"
+      >
+  </ion-button>
+
+  
+  <ion-grid>
+    <ion-row>
+      
+      <ion-col>
+        <ion-text *ngIf="!filePath">
+          <h3 >file is missing please upload a csv!</h3>
+        </ion-text>
+        <ion-text *ngIf="filePath">
+          <h3 >please enter the key!</h3>
+        </ion-text>
+        <form [formGroup]="convertorForm" (ngSubmit)="sumbit(convertorForm)">
+          <ion-item>
+            <ion-label>key</ion-label>
+            <ion-input [disabled]="!convertorForm.value.apiFileName" formControlName="key" type="text" name="title"></ion-input>
+          </ion-item>
+          <ion-button type="submit" [disabled]="convertorForm.invalid" expand="block" >convert</ion-button>
+        </form>
+      </ion-col>
+      <ion-col>
+        <img src="https://heremamit.nyc3.digitaloceanspaces.com/csv-vcf.png"/>
+      </ion-col>
+      
+    </ion-row>
+    </ion-grid>
+
+</ion-card>
 </ion-content>
